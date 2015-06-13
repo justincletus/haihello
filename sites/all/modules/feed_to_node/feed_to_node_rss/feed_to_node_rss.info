@@ -1,0 +1,12 @@
+name = Feed to node: RSS
+package = "feed to node"
+description = Load any RSS feed
+core = 7.x
+dependencies[] = feed_to_node
+
+; Information added by Drupal.org packaging script on 2015-04-24
+version = "7.x-1.11"
+core = "7.x"
+project = "feed_to_node"
+datestamp = "1429855982"
+

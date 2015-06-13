@@ -1,0 +1,5 @@
+
+User Auto Tag 7.x-1.0, xxxx-xx-xx
+-------------------------------------------
+Initial release of user_auto_tag module.
+Compatible with Drupal 7.x.

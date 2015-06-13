@@ -1,0 +1,17 @@
+name = I18n Migrate
+description = Tools for migrating internationalized taxonomy.
+
+package = Internationalization - Migrate
+core = 7.x
+
+dependencies[] = i18n_migrate_translation
+dependencies[] = i18n_taxonomy
+dependencies[] = migrate_d2d
+
+files[] = term.inc
+; Information added by Drupal.org packaging script on 2015-04-30
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "i18n_migrate"
+datestamp = "1430404692"
+

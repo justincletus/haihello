@@ -1,0 +1,73 @@
+<?php
+
+/**
+ * @file
+ * Auto tag users with content types tags
+ *
+ * User Auto Tag Module
+ *
+ * Drupal 7 version:
+ * Written by Gianluca Agnocchetti (hiryu)
+ */
+
+module_load_include('inc', 'userautotag', 'user_auto_tag.functions');
+
+define('USER_AUTO_TAG_SET_TAX_TERM_FIELD', 'field_user_auto_tags');
+define('USER_AUTO_TAG_DEFAULT_VOCABULARY', 'tags');
+
+/**
+ * Implements hook_install().
+ */
+function user_auto_tag_install() {
+  user_auto_tag_check_vocaboulary();
+  // Check if our field is not already created.
+  if (!field_info_field(USER_AUTO_TAG_SET_TAX_TERM_FIELD)) {
+    $field = array(
+      'field_name' => USER_AUTO_TAG_SET_TAX_TERM_FIELD,
+      'type' => 'taxonomy_term_reference',
+      'cardinality' => FIELD_CARDINALITY_UNLIMITED,
+      'settings' => array(
+        'allowed_values' => array(
+          array(
+            'vocabulary' => USER_AUTO_TAG_DEFAULT_VOCABULARY,
+            'parent' => 0,
+          ),
+        ),
+      ),
+    );
+    field_create_field($field);
+
+    // Create the instance on the bundle.
+    $instance = array(
+      'field_name' => USER_AUTO_TAG_SET_TAX_TERM_FIELD,
+      'entity_type' => 'user',
+      'label' => 'User tags',
+      'bundle' => 'user',
+      // If required is not set, automatically assume TRUE.
+      'required' => FALSE,
+      'settings' => array(
+        // Show or not on Registration form.
+        'user_register_form' => 0,
+      ),
+      'widget' => array(
+        'type' => 'taxonomy_autocomplete',
+      ),
+    );
+    field_create_instance($instance);
+  }
+  variable_set('field_user_auto_tags', USER_AUTO_TAG_SET_TAX_TERM_FIELD);
+  $t = get_t();
+  drupal_set_message($t("Taxonomy term field " . USER_AUTO_TAG_SET_TAX_TERM_FIELD . " created, on vocabulary " . USER_AUTO_TAG_DEFAULT_VOCABULARY . "."), 'status');
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function user_auto_tag_uninstall() {
+  variable_del('field_user_auto_tags');
+  variable_del('user_auto_tag_ct');
+  $types = user_auto_tag_get_node_types();
+  foreach ($types as $key => $type) {
+    variable_del('user_auto_tag_field_' . $key);
+  }
+}

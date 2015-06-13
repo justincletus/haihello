@@ -1,0 +1,23 @@
+/* Admin form */
+
+#edit-user-auto-tag-ct div,
+#edit-user-auto-tag-setup .form-type-select {
+  width: 33%;
+  display: inline-block;
+}
+#edit-user-auto-tag-ct div {
+  white-space: nowrap;
+}
+#edit-user-auto-tag-adm-exclude div {
+  width: 100%;
+}
+#edit-user-auto-tag-setup .form-submit {
+  display: block;
+}
+.form-item label {
+  padding-bottom: 8px;
+}
+#edit-user-auto-tag-setup hr {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

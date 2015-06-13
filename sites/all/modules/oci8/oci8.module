@@ -1,0 +1,82 @@
+<?php
+
+/**
+ * @file
+ * The OCI8 module.
+ */
+
+define('OCI8_DRUPAL_USER_TOKEN', ':DRUPAL_CURRENT_USER');
+
+/**
+ * Sets a new active Oracle database.
+ */
+function oci8_db_set_active($key = 'default') {
+  return OCI8Database::setActiveConnection($key);
+}
+
+/**
+ * Executes an arbitrary query string against the active database.
+ *
+ * Use this function for SELECT queries if it is just a simple query string.
+ * If the caller or other modules need to change the query, use db_select()
+ * instead.
+ *
+ * Do not use this function for INSERT, UPDATE, or DELETE queries. Those should
+ * be handled via db_insert(), db_update() and db_delete() respectively.
+ *
+ * @param $query
+ *   The prepared statement query to run. Although it will accept both named and
+ *   unnamed placeholders, named placeholders are strongly preferred as they are
+ *   more self-documenting.
+ * @param $args
+ *   An array of values to substitute into the query. If the query uses named
+ *   placeholders, this is an associative array in any order. If the query uses
+ *   unnamed placeholders (?), this is an indexed array and the order must match
+ *   the order of placeholders in the query string.
+ * @param $options
+ *   An array of options to control how the query operates.
+ *
+ * @return OCI8DatabaseStatementInterface
+ *   A prepared statement object, already executed.
+ *
+ * @see OCI8DatabaseConnection::defaultOptions()
+ */
+function oci8_db_query($query, array $args = array(), array $options = array()) {
+  if (empty($options['target'])) {
+    $options['target'] = 'default';
+  }
+
+  return OCI8Database::getConnection($options['target'])->query($query, $args, $options);
+}
+
+/**
+ * Executes a query against the active database, restricted to a range.
+ *
+ * @param $query
+ *   The prepared statement query to run. Although it will accept both named and
+ *   unnamed placeholders, named placeholders are strongly preferred as they are
+ *   more self-documenting.
+ * @param $from
+ *   The first record from the result set to return.
+ * @param $count
+ *   The number of records to return from the result set.
+ * @param $args
+ *   An array of values to substitute into the query. If the query uses named
+ *   placeholders, this is an associative array in any order. If the query uses
+ *   unnamed placeholders (?), this is an indexed array and the order must match
+ *   the order of placeholders in the query string.
+ * @param $options
+ *   An array of options to control how the query operates.
+ *
+ * @return OCI8DatabaseStatementInterface
+ *   A prepared statement object, already executed.
+ *
+ * @see OCI8DatabaseConnection::defaultOptions()
+ */
+function oci8_db_query_range($query, $from, $count, array $args = array(), array $options = array()) {
+  if (empty($options['target'])) {
+    $options['target'] = 'default';
+  }
+
+  return OCI8Database::getConnection($options['target'])->queryRange($query, $from, $count, $args, $options);
+}

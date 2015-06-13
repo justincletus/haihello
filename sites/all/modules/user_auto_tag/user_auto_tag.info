@@ -1,0 +1,13 @@
+name = "User Auto Tag"
+description = Auto tag logged user with node tags from visited content.
+core = "7.x"
+dependencies[] = field (>= 1.0)
+dependencies[] = entity (>= 1.1)
+configure = admin/config/workflow/user_auto_tag
+
+; Information added by drupal.org packaging script on 2013-07-31
+version = "7.x-1.0"
+core = "7.x"
+project = "user_auto_tag"
+datestamp = "1375276946"
+

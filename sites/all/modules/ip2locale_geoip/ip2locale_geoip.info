@@ -1,0 +1,16 @@
+; $Id: ip2locale.info,v 1.1 2009/05/01 21:25:04 mrfelton Exp $
+name         = IP to Locale - GEOIP
+description  = GEO IP Data provider for IP to Locale
+dependencies[] = ip2locale
+dependencies[] = libraries
+package      = Location
+core = 7.x
+files[] = ip2locale_geoip.module
+files[] = includes/geo_redirect.inc
+
+; Information added by Drupal.org packaging script on 2014-08-29
+version = "7.x-1.x-dev"
+core = "7.x"
+project = "ip2locale_geoip"
+datestamp = "1409306029"
+

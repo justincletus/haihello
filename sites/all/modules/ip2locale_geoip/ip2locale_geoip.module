@@ -1,0 +1,65 @@
+<?php
+// $Id$
+
+/**
+ * Implements hook_requirements().
+ */
+function ip2locale_geoip_requirements($phase) {
+  // Create an array to hold MPDF requirements
+  $requirements = array();
+
+  // Check requirements during the runtime phase
+  if ($phase == 'runtime') {
+    if (file_exists(libraries_get_path('geoip'))) {
+      $requirements['geoip'] = array(
+        'title' => t('GeoIP dat file'),
+        'value' => t('Available'),
+        'severity' => REQUIREMENT_OK,
+      );
+    } else {
+      $requirements['geoip'] = array(
+        'title' => t('GeoIP'),
+        'value' => t('Unavailable'),
+        'description' => t('The GeoIP.dat is missing. Download the !file and extract it to %sites/all or %sites/sitename.', array('%sites/all' => 'sites/all/libraries', '%sites/sitename' => 'sites/sitename/libraries', '!file' => l('GeoIP', 'http://geolite.maxmind.com/download/geoip/database/GeoLiteCountry/GeoIP.dat.gz', array('external' => TRUE)))),
+        'severity' => REQUIREMENT_ERROR,
+      );
+    }
+  }
+  return $requirements;
+}
+
+
+/**
+ * Implement hook_ip2locale_info().
+ */
+function ip2locale_geoip_ip2locale_info() {
+  $features = array(
+    array(t('ISO2 Country Code'), t('Yes'), t('The ISO3 standard country code (2 letter)')),
+  );
+  return array(
+    '#provider' => 'geoip',
+    '#name' => t('GeoIp'),
+    '#settings_description' => t('These settings specifically affect IP lookups using the <a href="@provider" target="_blank">geoip.com</a> service.', array('@provider' => 'geoip.com')),
+    '#supported_features' => $features,
+  );
+}
+
+/**
+ * Implement hook_ip2locale_get_locale()
+ */
+function ip2locale_geoip_ip2locale_get_locale($addr) {
+  $libpath = libraries_get_path('geoip');
+  if (file_exists($libpath)) {
+    include_once($lib_path . '/GeoIP.dat');
+  } else {
+    return;
+  }
+  module_load_include('inc', 'ip2locale_geoip', 'includes/geo_redirect');
+  $geo = geoip_open(drupal_get_path('module', 'ip2locale_geoip') . '/includes/GeoIP.dat', GEOIP_MEMORY_CACHE);
+  $code = geoip_country_code_by_addr($geo, $addr);
+  $country = new StdClass();
+  $country->iso2 = $code;
+  $country->ip = $addr;
+
+  return $country;
+}

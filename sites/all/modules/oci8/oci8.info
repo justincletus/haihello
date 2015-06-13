@@ -1,0 +1,13 @@
+name = Oracle Driver
+description = Data abstraction layer for Oracle RDBMS.
+core = 7.x
+package = Database
+version = 7.x-1.0-beta1
+
+files[] = oci8.database.inc
+; Information added by Drupal.org packaging script on 2014-06-06
+version = "7.x-1.0-beta1"
+core = "7.x"
+project = "oci8"
+datestamp = "1402097628"
+
